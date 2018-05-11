@@ -70,9 +70,9 @@ def train_save(list_csv, model_fn):
 if __name__ == "__main__":
     #stopWords_fn = 'all_stopword.txt'
     #get_stopWords(stopWords_fn)
-    #model = train_save('ming.all', 'word2vec_model_0925')
+    model = train_save('ming.all', 'word2vec_model_simple_poem')
 
-    model = Word2Vec.load('word2vec_model_0925')
+    model = Word2Vec.load('word2vec_model_simple_poem')
 
     #model_1 = Word2Vec.load(model)
     # 计算两个词的相似度/相关程度
