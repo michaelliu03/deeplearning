@@ -4,3 +4,4 @@
 # 做实验的model和数据就不上传了
 model/*
 data/*
+valid/*

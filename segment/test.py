@@ -4,8 +4,8 @@ import argparse
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from segment.BILSTM_CRF import BILSTM_CRF
-from segment.util import Util
+from BILSTM_CRF import *
+from util import *
 
 # python test.py model test.in test.out -c char_emb -g 2
 

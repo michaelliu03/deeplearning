@@ -3,9 +3,10 @@ import argparse
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from segment.util import Util
-from segment.BILSTM_CRF import BILSTM_CRF
+from util import *
+from BILSTM_CRF import *
 
+from  util import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("train_path", help="the path of the train file")
@@ -23,13 +24,14 @@ val_path = args.val_path
 num_epochs = args.epoch
 emb_path = args.char_emb
 gpu_config = "/gpu:"+str(args.gpu)
+#gpu_config - "/cpu:" + str(args.cpu)
 num_steps = 200 # it must consist with the test
 
 start_time = time.time()
 
 util = Util()
 print("preparing train and validation data")
-util.buildMap(trainPath=train_path)
+util.bulidMap(trainPath=train_path)
 x_train, y_train, x_val, y_val = util.initFile(inputPath=train_path, validPath=val_path, seqMaxLen=num_steps)
 num_chars = len(util.id2char.keys())
 num_classes = len(util.id2label.keys())

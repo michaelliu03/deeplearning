@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import tensorflow as tf
-from segment.util import  *
+from util import  *
 
 class BILSTM_CRF(object):
 
@@ -27,8 +27,8 @@ class BILSTM_CRF(object):
         self.num_classes = num_classes
         self.util = util
 
-        self.inputs  = tf.placeholder(tf.int32,[None, self.num_steps])
-        self.targets = tf.placeholder(tf.int32, [None, self.num_steps])
+        self.inputs  = tf.placeholder(tf.int32,[None, self.num_chars])
+        self.targets = tf.placeholder(tf.int32, [None, self.num_chars])
 
         # char embedding
         if embedding_matrix != None:

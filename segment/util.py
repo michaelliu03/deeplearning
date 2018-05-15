@@ -31,7 +31,7 @@ class Util(object):
         self.inputY = self.inputY[indexs]
 
     def initFile(self, inputPath, validPath=None, seqMaxLen=200):
-        logging.INFO("initFile starting.......")
+        #logging.INFO("initFile starting.......")
         self.inputIndex = 0
         self.inputX, self.inputY = self.loadFile(inputPath, seqMaxLen)
 
@@ -100,10 +100,10 @@ class Util(object):
         self.char2id["<NEW>"] = len(chars) + 1
 
         # save map
-        with open("char2id", "wb",encoding='utf-8') as outfile:
+        with open("char2id", "w",encoding='utf-8') as outfile:
             for idx in self.id2char:
                 outfile.write(self.id2char[idx] + "\t" + str(idx) + "\r\n")
-        with open("label2id", "wb",encoding='utf-8') as outfile:
+        with open("label2id", "w",encoding='utf-8') as outfile:
             for idx in self.id2label:
                 outfile.write(self.id2label[idx] + "\t" + str(idx) + "\r\n")
         print( "saved map between token and id")
