@@ -111,7 +111,48 @@ class Util(object):
     def loadMap(self, filePath):
         if not os.path.isfile(filePath):
             sys.exit("map file not exist")
+        token2id = {}
+        id2token = {}
+        with open(filePath) as infile:
+            for row in infile:
+                row = row.strip()
+                token = row.split('\t')[0]
+                id = int(row.split('\t')[1])
+                token2id[id] = id
+                id2token[id] = token
+        return token2id,id2token
 
+    def nextBatch(self,batch_size = 128):
+        lastIndex = self.inputIndex + batch_size
+        x_batch = list(self.inputX[self.inputIndex:min(lastIndex, len(self.inputX))])
+        y_batch = list(self.inputY[self.inputIndex:min(lastIndex, len(self.inputY))])
+        if lastIndex > len(self.inputX):
+            leftSize = lastIndex - (len(self.inputX))
+            for i in leftSize:
+                index = np.random.randint(len(self.inputX))
+                x_batch.append(self.inputX[index])
+                y_batch.append(self.inputY[index])
+        x_batch = np.array(x_batch)
+        y_batch = np.array(y_batch)
+        self.inputIndex = min(lastIndex, len(self.inputX))
+        return x_batch, y_batch
+
+    def nextRandomBatch(self, batch_size=128):
+        x_batch = []
+        y_batch = []
+        for i in range(batch_size):
+            index = np.random.randint(len(self.validX))
+            x_batch.append(self.validX[index])
+            y_batch.append(self.validY[index])
+        x_batch = np.array(x_batch)
+        y_batch = np.array(y_batch)
+        return x_batch, y_batch
+
+    def padding(self,sample,seqMaxLen):
+        for i in range(len(sample)):
+            if len(sample[i]) < seqMaxLen:
+                sample[i] += [0 for _ in range(seqMaxLen - len(sample[i]))]
+        return sample
 
 
 if __name__ == "__main__":
