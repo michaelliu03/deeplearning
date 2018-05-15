@@ -1,2 +1,6 @@
 *.idea
 *.ipynb_checkpoints
+
+# 做实验的model和数据就不上传了
+model/*
+data/*
