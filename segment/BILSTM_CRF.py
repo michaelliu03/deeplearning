@@ -26,9 +26,9 @@ class BILSTM_CRF(object):
         self.num_chars = num_chars
         self.num_classes = num_classes
         self.util = util
-
-        self.inputs  = tf.placeholder(tf.int32,[None, self.num_chars])
-        self.targets = tf.placeholder(tf.int32, [None, self.num_chars])
+        self.num_steps = num_steps
+        self.inputs  = tf.placeholder(tf.int32,[None, self.num_steps])
+        self.targets = tf.placeholder(tf.int32, [None, self.num_steps])
 
         # char embedding
         if embedding_matrix != None:
@@ -82,8 +82,8 @@ class BILSTM_CRF(object):
 
         print("load char2id")
 
-        char2id, id2char = self.helper.loadMap("char2id")
-        label2id, id2label = self.helper.loadMap("label2id")
+        char2id, id2char = self.util.loadMap("char2id")
+        label2id, id2label = self.util.loadMap("label2id")
 
         num_iterations = int(math.ceil(1.0 * len(X_train) / self.batch_size))
 
@@ -96,8 +96,8 @@ class BILSTM_CRF(object):
             # np.random.shuffle(sh_index)
             # X_train = X_train[sh_index]
             # y_train = y_train[sh_index]
-            self.util.shuffle()
-            print( "current epoch: %d" % (epoch))
+            self.util.shuffle_data()
+            print("current epoch: %d" % (epoch))
 
             for iteration in range(num_iterations):
                 # train
@@ -131,9 +131,8 @@ class BILSTM_CRF(object):
                     cnt += 1
                     precision_train, recall_train, f1_train = self.evaluate(x_train_batch_cut, y_train_batch_cut,
                                                                             predict_sequences, id2char, id2label)
-                    # print "iteration: %5d, train loss: %5d, train precision: %.5f, train recall: %.5f, train f1: %.5f" % (iteration, loss_train, precision_train, recall_train, f1_train)
-                    print("iteration: %5d, train loss: null, train precision: %.5f, train recall: %.5f, train f1: %.5f" % (
-                    iteration, precision_train, recall_train, f1_train))
+                    #print("iteration: %5d, train loss: %5d, train precision: %.5f, train recall: %.5f, train f1: %.5f" % (iteration, loss_train, precision_train, recall_train, f1_train))
+                    print("iteration: %5d, train precision: %.5f, train recall: %.5f, train f1: %.5f" % (iteration, precision_train, recall_train, f1_train))
 
 
                     # validation
@@ -168,19 +167,19 @@ class BILSTM_CRF(object):
     def test(self, sess, output_path):
         char2id, id2char = self.util.loadMap("char2id")
         label2id, id2label = self.util.loadMap("label2id")
-        num_iterations = int(math.ceil(1.0 * len(self.helper.inputX) / self.batch_size))
+        num_iterations = int(math.ceil(1.0 * len(self.util.inputX) / self.batch_size))
         print("number of iteration: " + str(num_iterations))
 
         with open(output_path, "w") as outfile:
             for i in range(num_iterations):
                 print("iteration: " + str(i + 1))
 
-                lastIndex = self.helper.inputIndex
+                lastIndex = self.util.inputIndex
                 x_test_batch, y_test_batch = self.util.nextBatch(batch_size=self.batch_size)
                 results = self.predictBatch(sess, x_test_batch, id2char, id2label)
 
                 if i == num_iterations - 1:
-                    last_size = len(self.helper.inputX) % self.batch_size
+                    last_size = len(self.util.inputX) % self.batch_size
                     if last_size > 0:
                         results = results[:last_size]
 

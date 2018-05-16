@@ -3,10 +3,9 @@ import argparse
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from util import *
-from BILSTM_CRF import *
+from util import Util
+from BILSTM_CRF import BILSTM_CRF
 
-from  util import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("train_path", help="the path of the train file")
@@ -24,7 +23,6 @@ val_path = args.val_path
 num_epochs = args.epoch
 emb_path = args.char_emb
 gpu_config = "/gpu:"+str(args.gpu)
-#gpu_config - "/cpu:" + str(args.cpu)
 num_steps = 200 # it must consist with the test
 
 start_time = time.time()

@@ -22,16 +22,15 @@ class Util(object):
         self.validX = None
         self.validY = None
 
-    def  shuffle(self):
+    def  shuffle_data(self):
         self.inputIndex =0
         num_samples = len(self.inputX)
-        indexs =np.arrange(num_samples)
+        indexs =np.arange(num_samples)
         np.random.shuffle(indexs)
         self.inputX = self.inputX[indexs]
         self.inputY = self.inputY[indexs]
 
     def initFile(self, inputPath, validPath=None, seqMaxLen=200):
-        #logging.INFO("initFile starting.......")
         self.inputIndex = 0
         self.inputX, self.inputY = self.loadFile(inputPath, seqMaxLen)
 
@@ -49,7 +48,7 @@ class Util(object):
         Y = []
         x = []
         y = []
-        for line in open(inputPath,'r',encoding='utf-8'):
+        for line in open(inputPath,'r'):
             line = line.strip()
             if len(line) == 0:
                 if len(x) <= seqMaxLen and len(x) > 0:
@@ -74,7 +73,7 @@ class Util(object):
     def bulidMap(self,trainPath):
         charSet = set()
         labelSet = set()
-        for line  in open(trainPath,'r', encoding='utf-8'):
+        for line in open(trainPath,'r'):
             line = line.strip()
             if len(line)  == 0 : continue
 
@@ -100,10 +99,10 @@ class Util(object):
         self.char2id["<NEW>"] = len(chars) + 1
 
         # save map
-        with open("char2id", "w",encoding='utf-8') as outfile:
+        with open("char2id", "w") as outfile:
             for idx in self.id2char:
                 outfile.write(self.id2char[idx] + "\t" + str(idx) + "\r\n")
-        with open("label2id", "w",encoding='utf-8') as outfile:
+        with open("label2id", "w") as outfile:
             for idx in self.id2label:
                 outfile.write(self.id2label[idx] + "\t" + str(idx) + "\r\n")
         print( "saved map between token and id")
