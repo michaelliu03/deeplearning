@@ -154,12 +154,6 @@ class Util(object):
         return sample
 
 
-if __name__ == "__main__":
-    util = Util()
-    util.bulidMap( '../data/seg/ChinaLangOrg.seg.label')
-    #print("kai x")
-
-
 
 
 
