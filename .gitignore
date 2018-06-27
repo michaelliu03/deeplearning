@@ -5,5 +5,7 @@
 model/*
 data/*
 valid/*
+unit/*
+text_generation/*
 # 这部分代码写的太乱，去掉了
 wordenbedding/*
